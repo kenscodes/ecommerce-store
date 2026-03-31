@@ -65,36 +65,16 @@ Below are key screenshots showing the UI in action:
 ![Cart with Items](docs/screenshots/02-cart-with-items.png)
 *Shopping cart showing added products with quantity controls and price calculations*
 
-#### **Discount Applied**
-![Discount Applied](docs/screenshots/03-discount-applied.png)
-*Cart showing successful discount code application with reduced total*
-
-#### **Discount Generation**
-![Discount Generation](docs/screenshots/04-discount-generation.png)
-*Admin section showing successful discount code generation with visual feedback*
-
-#### **Discount Settings Configuration**
-![Discount Settings](docs/screenshots/05-discount-settings.png)
-*Discount configuration panel showing customizable Nth order and percentage settings*
-
-#### **Discount Codes List**
-![Discount Codes List](docs/screenshots/06-discount-codes-list.png)
-*Complete list of discount codes with status badges (AVAILABLE/USED) and timestamps*
-
 #### **Analytics Dashboard**
-![Analytics Dashboard](docs/screenshots/07-analytics-dashboard.png)
+![Analytics Dashboard](docs/screenshots/Analytics-admin-Board.png)
 *Real-time admin analytics showing orders, revenue, discounts, and system metrics*
 
 #### **Checkout Success**
-![Checkout Success](docs/screenshots/08-checkout-success.png)
-*Order confirmation showing successful checkout with order details*
-
-#### **Multi-User Testing**
-![Multi-User Testing](docs/screenshots/09-multi-user-tabs.png)
-*Multiple browser tabs demonstrating shared in-memory storage and real-time updates*
+![Checkout Success](docs/screenshots/order-success.png)
+*Order confirmation showing successful checkout *
 
 #### **Error Handling**
-![Error Messages](docs/screenshots/10-error-messages.png)
+![Error Messages](docs/screenshots/error.png)
 *Error handling examples for invalid codes, used codes, and out-of-stock items*
 
 ### UI Layout Description
