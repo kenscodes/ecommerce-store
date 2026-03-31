@@ -291,6 +291,165 @@
             margin-bottom: 15px;
         }
         
+        .generate-discount-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+        
+        .generate-discount-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .generated-code-display {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #c3e6cb;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .discount-controls {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .control-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .control-panel h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .config-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+            width: 100%;
+        }
+        
+        .config-input:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+        
+        .config-btn {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .config-btn:hover {
+            background: #218838;
+            transform: scale(1.02);
+        }
+        
+        .refresh-btn {
+            padding: 8px 16px;
+            background: #17a2b8;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .refresh-btn:hover {
+            background: #138496;
+        }
+        
+        .discount-codes-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .discount-codes-panel h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .discount-code-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .discount-code-info {
+            flex: 1;
+        }
+        
+        .discount-code-value {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+        }
+        
+        .discount-code-percentage {
+            color: #28a745;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .discount-code-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-used {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .discount-code-date {
+            color: #6c757d;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+        
         .admin-stat {
             font-size: 2em;
             font-weight: bold;
@@ -398,6 +557,36 @@
                 ⚙️ Admin Analytics
                 <span class="badge">Live Data</span>
             </h2>
+            
+            <div class="admin-controls" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <!-- Discount Generation -->
+                <div class="control-panel">
+                    <h3>🎫 Discount Generation</h3>
+                    <button class="generate-discount-btn" onclick="generateDiscount()">
+                        Generate Discount Code
+                    </button>
+                    <div id="generatedCode" style="margin-top: 10px;"></div>
+                </div>
+                
+                <!-- Discount Configuration -->
+                <div class="control-panel">
+                    <h3>⚙️ Discount Settings</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                        <input type="number" id="nthOrder" class="config-input" placeholder="Every Nth order" value="3" min="1">
+                        <input type="number" id="discountPercent" class="config-input" placeholder="Discount %" value="10" min="1" max="99">
+                    </div>
+                    <button class="config-btn" onclick="updateDiscountSettings()">Update Settings</button>
+                    <div id="settingsResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            
+            <!-- Discount Codes List -->
+            <div class="discount-codes-panel" style="margin-bottom: 20px;">
+                <h3>🎟️ All Discount Codes</h3>
+                <button class="refresh-btn" onclick="loadDiscountCodes()">🔄 Refresh Codes</button>
+                <div id="discountCodesList" style="margin-top: 10px;"></div>
+            </div>
+            
             <div class="admin-grid" id="adminGrid">
                 <div class="loading"></div>
             </div>
@@ -419,10 +608,18 @@
             loadProducts();
             loadCart();
             loadAnalytics();
+            loadDiscountCodes();
             
             // Update analytics every 5 seconds
             setInterval(loadAnalytics, 5000);
         });
+        
+        // Function to convert number to proper ordinal (1st, 2nd, 3rd, 4th, etc.)
+        function getOrdinal(n) {
+            const s = ["th", "st", "nd", "rd"];
+            const v = n % 100;
+            return n + (s[(v - 20) % 10] || s[v] || s[0]);
+        }
         
         async function loadProducts() {
             try {
@@ -601,6 +798,73 @@
             document.getElementById('cartCount').textContent = `${count} items`;
         }
         
+        async function updateDiscountSettings() {
+            const nthOrder = document.getElementById('nthOrder').value;
+            const discountPercent = document.getElementById('discountPercent').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/admin/settings/discount?everyNthOrder=${nthOrder}&percentage=${discountPercent}`, {
+                    method: 'PUT'
+                });
+                
+                const result = await response.json();
+                const resultDiv = document.getElementById('settingsResult');
+                
+                if (result.success) {
+                    resultDiv.innerHTML = `<div class="message success">Settings updated: Every ${nthOrder}th order gets ${discountPercent}% discount</div>`;
+                    showMessage('Discount settings updated successfully', 'success');
+                    loadAnalytics(); // Refresh analytics to show new settings
+                } else {
+                    resultDiv.innerHTML = `<div class="message error">${result.message}</div>`;
+                    showMessage(result.message, 'error');
+                }
+            } catch (error) {
+                showMessage('Failed to update settings: ' + error.message, 'error');
+            }
+        }
+        
+        async function loadDiscountCodes() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/discounts`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayDiscountCodes(result.data);
+                } else {
+                    showMessage('Failed to load discount codes', 'error');
+                }
+            } catch (error) {
+                showMessage('Failed to load discount codes: ' + error.message, 'error');
+            }
+        }
+        
+        function displayDiscountCodes(discounts) {
+            const codesList = document.getElementById('discountCodesList');
+            
+            if (discounts.length === 0) {
+                codesList.innerHTML = '<p style="text-align: center; color: #6c757d;">No discount codes generated yet.</p>';
+                return;
+            }
+            
+            codesList.innerHTML = discounts.map(discount => `
+                <div class="discount-code-item">
+                    <div class="discount-code-info">
+                        <div>
+                            <span class="discount-code-value">${discount.code}</span>
+                            <span class="discount-code-percentage">${discount.percentage}% off</span>
+                        </div>
+                        <div class="discount-code-date">
+                            Created: ${new Date(discount.createdAt).toLocaleString()}
+                            ${discount.usedAt ? `| Used: ${new Date(discount.usedAt).toLocaleString()}` : ''}
+                        </div>
+                    </div>
+                    <div class="discount-code-status ${discount.used ? 'status-used' : 'status-available'}">
+                        ${discount.used ? 'USED' : 'AVAILABLE'}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
         async function applyDiscount() {
             const discountCode = document.getElementById('discountCode').value.trim();
             
@@ -609,18 +873,38 @@
                 return;
             }
             
-            // Simulate discount validation by checking if it looks valid
-            if (discountCode.startsWith('DISCOUNT') || discountCode.startsWith('SAVE')) {
-                appliedDiscount = {
-                    code: discountCode,
-                    percentage: 10 // Simulate 10% discount
-                };
-                showMessage(`Discount code applied: ${discountCode} (10% off)`, 'success');
-                loadCart(); // Refresh to show discount
-            } else {
-                showMessage('Invalid discount code', 'error');
-                appliedDiscount = null;
-                loadCart();
+            // Validate discount code by checking if it exists and is unused
+            try {
+                const response = await fetch(`${API_BASE}/admin/discounts`);
+                const result = await response.json();
+                
+                let validDiscount = null;
+                if (result.success) {
+                    validDiscount = result.data.find(d => 
+                        d.code.toLowerCase() === discountCode.toLowerCase() && !d.used
+                    );
+                }
+                
+                if (validDiscount) {
+                    appliedDiscount = validDiscount;
+                    showMessage(`Discount code applied: ${validDiscount.code} (${validDiscount.percentage}% off)`, 'success');
+                    loadCart(); // Refresh to show discount
+                } else {
+                    // Check if it exists but is used
+                    const usedDiscount = result.data?.find(d => 
+                        d.code.toLowerCase() === discountCode.toLowerCase() && d.used
+                    );
+                    
+                    if (usedDiscount) {
+                        showMessage('This discount code has already been used', 'error');
+                    } else {
+                        showMessage('Invalid discount code', 'error');
+                    }
+                    appliedDiscount = null;
+                    loadCart();
+                }
+            } catch (error) {
+                showMessage('Failed to validate discount code: ' + error.message, 'error');
             }
         }
         
@@ -701,13 +985,48 @@
                 </div>
                 <div class="admin-card">
                     <h3>⚙️ Discount Every</h3>
-                    <div class="admin-stat">${analytics.discountEveryNthOrder}th order</div>
+                    <div class="admin-stat">${getOrdinal(analytics.discountEveryNthOrder)} order</div>
                 </div>
                 <div class="admin-card">
                     <h3>🎯 Discount Rate</h3>
                     <div class="admin-stat">${analytics.discountPercentage}%</div>
                 </div>
             `;
+        }
+        
+        async function generateDiscount() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/discounts/generate`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    const discount = result.data;
+                    const codeDisplay = document.getElementById('generatedCode');
+                    codeDisplay.innerHTML = `
+                        <div class="generated-code-display">
+                            🎉 Discount Generated! 🎉<br>
+                            Code: <strong>${discount.code}</strong><br>
+                            Discount: ${discount.percentage}%<br>
+                            <small>Use this code at checkout!</small>
+                        </div>
+                    `;
+                    showMessage(`Discount code generated: ${discount.code} (${discount.percentage}% off)`, 'success');
+                    loadAnalytics(); // Refresh analytics
+                } else {
+                    const codeDisplay = document.getElementById('generatedCode');
+                    codeDisplay.innerHTML = `
+                        <div class="message error" style="margin-top: 10px;">
+                            ${result.message}
+                        </div>
+                    `;
+                    showMessage(result.message, 'error');
+                }
+            } catch (error) {
+                showMessage('Failed to generate discount: ' + error.message, 'error');
+            }
         }
         
         function showMessage(text, type) {
